@@ -48,7 +48,8 @@ with mp_hands.Hands(max_num_hands = settings.nb_max_hands, min_detection_confide
                 #     sign.arpege(image, results, steps)
                 # else : 
                 #     steps = [0]*7
-                sign.fing_spread(image, results)
+                #sign.fing_spread(image, results)
+                sign.wrap_fing(image, results)
 
         cv2.imshow('Hand Tracking', image)
 

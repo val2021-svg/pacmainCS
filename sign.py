@@ -55,9 +55,28 @@ def fing_spread(image, results):
         if calcul.cos_alkashi(ind_to_mid,mid_fing,ind_fing) < cos(calcul.radian(5)) and calcul.cos_alkashi(ind_to_mid,mid_fing,ind_fing) > cos(calcul.radian(45)) :
                 if calcul.cos_alkashi(mid_to_ring,mid_fing,ring_fing) < cos(calcul.radian(5)) and calcul.cos_alkashi(mid_to_ring,mid_fing,ring_fing) > cos(calcul.radian(45)) :
                         if calcul.cos_alkashi(ring_to_little,ring_fing,little_fing) < cos(calcul.radian(5)) and calcul.cos_alkashi(ring_to_little,ring_fing,little_fing) > cos(calcul.radian(45)) :
-                            cv2.putText(image, "GREAT!", (settings.sw//2,settings.sh//2), 0, 1, settings.GREEN, 6)
-                            for i in range(21):
-                                draw.color_pos(image, pos[i], settings.RED)
+                            if abs(pos[4][2]-pos[0][2])<=85 and abs(pos[8][2]-pos[0][2])<=95 and abs(pos[12][2]-pos[0][2])<=105 and abs(pos[16][2]-pos[0][2])<=125 and abs(pos[20][2]-pos[0][2])<=140 : #straight hand
+                                cv2.putText(image, "GREAT!", (settings.sw//2,settings.sh//2), 0, 1, settings.GREEN, 6)
+                                for i in range(21):
+                                    draw.color_pos(image, pos[i], settings.RED)
+
+def wrap_fing(image, results):
+    cv2.putText(image, "Wrap your fingers", (50,80), 0, 1, (0,0,255), 2)
+    cv2.putText(image, calcul.handedness(results), (settings.sh,80), 0, 1.5, (0,0,255), 2)
+    pos = calcul.pos_hand_landmarks(image,results)
+    draw.draw_HAND(image, pos)
+
+    if pos[8][1] > pos[6][1] and pos[12][1] > pos[10][1] and pos[16][1] > pos[14][1] and pos[20][1] > pos[18][1]:
+        cv2.putText(image, "GREAT!", (settings.sw//2,settings.sh//2), 0, 1, settings.GREEN, 6)
+        for i in range(21):
+            draw.color_pos(image, pos[i], settings.RED)
+    
+        if pos[8][1] > pos[5][1] and pos[12][1] > pos[9][1] and pos[16][1] > pos[13][1] and pos[20][1] > pos[17][1]:
+            cv2.putText(image, "MAGNIFICENT!", (settings.sw//2,settings.sh//2), 0, 1, settings.GREEN, 6)
+            for i in range(21):
+                draw.color_pos(image, pos[i], settings.RED)
+
+   
 
 
 def arpege(image, results, steps):

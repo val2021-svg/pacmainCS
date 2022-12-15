@@ -44,10 +44,11 @@ with mp_hands.Hands(max_num_hands = settings.nb_max_hands, min_detection_confide
         if results.multi_hand_landmarks:
             for hand_landmarks in results.multi_hand_landmarks : 
                 # sign.victory(image, results)
-                if steps[6] == 0 : 
-                    sign.arpege(image, results, steps)
-                else : 
-                    steps = [0]*7
+                # if steps[6] == 0 : 
+                #     sign.arpege(image, results, steps)
+                # else : 
+                #     steps = [0]*7
+                sign.fing_spread(image, results)
 
         cv2.imshow('Hand Tracking', image)
 

@@ -37,28 +37,12 @@ def fing_spread(image, results):
     pos = calcul.pos_hand_landmarks(image,results)
     draw.draw_HAND(image, pos)
 
-    #distances to the wrist
-    thumb = calcul.eucli_length(pos[0],pos[4])
-    ind_fing = calcul.eucli_length(pos[0],pos[8])
-    mid_fing = calcul.eucli_length(pos[0],pos[12])
-    ring_fing = calcul.eucli_length(pos[0],pos[16])
-    little_fing = calcul.eucli_length(pos[0],pos[20])
-
-    #distances between fingers
-    thumb_to_ind = calcul.eucli_length(pos[4],pos[8])
-    ind_to_mid = calcul.eucli_length(pos[8],pos[12])
-    mid_to_ring = calcul.eucli_length(pos[12],pos[16])
-    ring_to_little = calcul.eucli_length(pos[16],pos[20])
-
     #spreaded or not
-    if calcul.cos_alkashi(thumb_to_ind,thumb,ind_fing) < cos(calcul.radian(5)) and calcul.cos_alkashi(thumb_to_ind,thumb,ind_fing) > cos(calcul.radian(45)) :
-        if calcul.cos_alkashi(ind_to_mid,mid_fing,ind_fing) < cos(calcul.radian(5)) and calcul.cos_alkashi(ind_to_mid,mid_fing,ind_fing) > cos(calcul.radian(45)) :
-                if calcul.cos_alkashi(mid_to_ring,mid_fing,ring_fing) < cos(calcul.radian(5)) and calcul.cos_alkashi(mid_to_ring,mid_fing,ring_fing) > cos(calcul.radian(45)) :
-                        if calcul.cos_alkashi(ring_to_little,ring_fing,little_fing) < cos(calcul.radian(5)) and calcul.cos_alkashi(ring_to_little,ring_fing,little_fing) > cos(calcul.radian(45)) :
-                            if abs(pos[4][2]-pos[0][2])<=85 and abs(pos[8][2]-pos[0][2])<=95 and abs(pos[12][2]-pos[0][2])<=105 and abs(pos[16][2]-pos[0][2])<=125 and abs(pos[20][2]-pos[0][2])<=140 : #straight hand
-                                cv2.putText(image, "GREAT!", (settings.sw//2,settings.sh//2), 0, 1, settings.GREEN, 6)
-                                for i in range(21):
-                                    draw.color_pos(image, pos[i], settings.RED)
+    if not calcul.little_wrap(pos):
+        if calcul.spread(pos):
+            cv2.putText(image, "GREAT!", (settings.sw//2,settings.sh//2), 0, 1, settings.GREEN, 6)
+            for i in range(21):
+                draw.color_pos(image, pos[i], settings.RED)
 
 def wrap_fing(image, results):
     cv2.putText(image, "Wrap your fingers", (50,80), 0, 1, (0,0,255), 2)
@@ -68,12 +52,12 @@ def wrap_fing(image, results):
 
     if pos[0][1]>pos[1][1]:
         if calcul.really_wrap(pos):
-            cv2.putText(image, "MAGNIFICENT!", (settings.sw//2,settings.sh//2), 0, 1, settings.GREEN, 6)
+            cv2.putText(image, "MAGNIFICENT!", (settings.sw//2 - 30,settings.sh//2), 0, 1, settings.GREEN, 6)
             for i in range(21):
                 draw.color_pos(image, pos[i], settings.RED)
         
         elif calcul.little_wrap(pos):
-            cv2.putText(image, "GREAT!", (settings.sw//2,settings.sh//2), 0, 1, settings.GREEN, 6)
+            cv2.putText(image, "GREAT!", (settings.sw//2 - 20,settings.sh//2), 0, 1, settings.GREEN, 6)
             for i in range(21):
                 draw.color_pos(image, pos[i], settings.RED)
 

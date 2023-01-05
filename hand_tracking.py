@@ -1,9 +1,5 @@
 import mediapipe as mp
 import cv2
-import numpy as np
-import uuid
-import os
-import calcul
 from math import *
 import sign
 import settings
@@ -53,7 +49,7 @@ with mp_hands.Hands(max_num_hands = settings.nb_max_hands, min_detection_confide
 
         cv2.imshow('Hand Tracking', image)
 
-        if cv2.waitKey(10) & 0xFF == ord('x'):
+        if cv2.waitKey(10) & 0xFF == ord('x'): #type 'x' on your keyboard to close the window
             break
 
 cap.release()

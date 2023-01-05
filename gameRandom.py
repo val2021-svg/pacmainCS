@@ -8,7 +8,6 @@ from math import *
 import sign
 import settings
 
-
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 

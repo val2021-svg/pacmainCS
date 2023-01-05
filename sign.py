@@ -19,20 +19,20 @@ def victory(image, results):
 
         if calcul.cos_alkashi(a,b,c) < cos(calcul.radian(10)) and calcul.cos_alkashi(a,b,c) > cos(calcul.radian(45)) and pos[12][0] > pos[8][0]:
             hand_status = "V"
-            cv2.putText(image, hand_status, (50,80), 0, 1.5, (0,0,255), 2)
-            cv2.putText(image, calcul.handedness(results), (settings.sh,80), 0, 1.5, (0,0,255), 2)
+            cv2.putText(image, hand_status, (50,80), 0, 1.5, settings.RED, 2)
+            cv2.putText(image, calcul.handedness(results), (settings.sh,80), 0, 1.5, settings.RED, 2)
     
     else : 
 
         if calcul.cos_alkashi(a,b,c) < cos(calcul.radian(10)) and calcul.cos_alkashi(a,b,c) > cos(calcul.radian(25)) and pos[8][0] > pos[12][0]:
             hand_status = "V"
             cv2.putText(image, hand_status, (50,80), 0, 1.5, (0,0,255), 2)
-            cv2.putText(image, calcul.handedness(results), (settings.sh,80), 0, 1.5, (0,0,255), 2)
+            cv2.putText(image, calcul.handedness(results), (settings.sh,80), 0, 1.5, settings.RED, 2)
 
 def fing_spread(image, results):
     
-    cv2.putText(image, "Spread your fingers", (50,80), 0, 1, (0,0,255), 2)
-    cv2.putText(image, calcul.handedness(results), (settings.sh,80), 0, 1.5, (0,0,255), 2)
+    cv2.putText(image, "Spread your fingers", (50,80), 0, 1, settings.RED, 2)
+    cv2.putText(image, calcul.handedness(results), (settings.sh,80), 0, 1.5, settings.RED, 2)
     pos = calcul.pos_hand_landmarks(image,results)
     draw.draw_HAND(image, pos)
 
@@ -45,8 +45,8 @@ def fing_spread(image, results):
 
 def wrap_fing(image, results):
 
-    cv2.putText(image, "Wrap your fingers", (50,80), 0, 1, (0,0,255), 2)
-    cv2.putText(image, calcul.handedness(results), (settings.sh,80), 0, 1.5, (0,0,255), 2)
+    cv2.putText(image, "Wrap your fingers", (50,80), 0, 1, settings.RED, 2)
+    cv2.putText(image, calcul.handedness(results), (settings.sh,80), 0, 1.5, settings.RED, 2)
     pos = calcul.pos_hand_landmarks(image,results)
     draw.draw_HAND(image, pos)
 
@@ -64,8 +64,8 @@ def wrap_fing(image, results):
 
 def arpege(image, results, steps):
 
-    cv2.putText(image, "Match the red dots", (50,80), 0, 1, (0,0,255), 2)
-    cv2.putText(image, calcul.handedness(results), (settings.sh,80), 0, 1.5, (0,0,255), 2)
+    cv2.putText(image, "Match the red dots", (50,80), 0, 1, settings.RED, 2)
+    cv2.putText(image, calcul.handedness(results), (settings.sh,80), 0, 1.5, settings.RED, 2)
     pos = calcul.pos_hand_landmarks(image,results)
     draw.draw_HAND(image, pos)
     

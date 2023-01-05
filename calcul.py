@@ -33,6 +33,20 @@ def handedness(results):
                     whichHand =(handedness_dict['classification'][0]['label'])
                     return whichHand
 
+def little_wrap(pos): #level 1 of wrapping your fingers
+    if pos[8][1] > pos[6][1] and pos[12][1] > pos[10][1] and pos[16][1] > pos[14][1] and pos[20][1] > pos[18][1]:
+        return True
+    else :
+        return False
+
+def really_wrap(pos): #level2 of wrapping your fingers
+    if pos[8][1] > pos[5][1] and pos[12][1] > pos[9][1] and pos[16][1] > pos[13][1] and pos[20][1] > pos[17][1]:
+        return True
+    else :
+        return False
+    
+
+    
 
 # #distances of the phalanxes 
 #     a_thumb = calcul.eucli_length(pos[3],pos[1])

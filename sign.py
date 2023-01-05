@@ -66,17 +66,16 @@ def wrap_fing(image, results):
     pos = calcul.pos_hand_landmarks(image,results)
     draw.draw_HAND(image, pos)
 
-    if pos[8][1] > pos[6][1] and pos[12][1] > pos[10][1] and pos[16][1] > pos[14][1] and pos[20][1] > pos[18][1]:
-        cv2.putText(image, "GREAT!", (settings.sw//2,settings.sh//2), 0, 1, settings.GREEN, 6)
-        for i in range(21):
-            draw.color_pos(image, pos[i], settings.RED)
-    
-        if pos[8][1] > pos[5][1] and pos[12][1] > pos[9][1] and pos[16][1] > pos[13][1] and pos[20][1] > pos[17][1]:
+    if pos[0][1]>pos[1][1]:
+        if calcul.really_wrap(pos):
             cv2.putText(image, "MAGNIFICENT!", (settings.sw//2,settings.sh//2), 0, 1, settings.GREEN, 6)
             for i in range(21):
                 draw.color_pos(image, pos[i], settings.RED)
-
-   
+        
+        elif calcul.little_wrap(pos):
+            cv2.putText(image, "GREAT!", (settings.sw//2,settings.sh//2), 0, 1, settings.GREEN, 6)
+            for i in range(21):
+                draw.color_pos(image, pos[i], settings.RED)
 
 
 def arpege(image, results, steps):

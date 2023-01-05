@@ -31,7 +31,7 @@ def victory(image, results):
             cv2.putText(image, calcul.handedness(results), (settings.sh,80), 0, 1.5, (0,0,255), 2)
 
 def arpege(image, results, steps):
-
+    
     cv2.putText(image, "Match the red dots", (50,80), 0, 1, (0,0,255), 2)
     cv2.putText(image, calcul.handedness(results), (settings.sh,80), 0, 1.5, (0,0,255), 2)
     pos = calcul.pos_hand_landmarks(image,results)

@@ -1,12 +1,11 @@
 import cv2
-import mediapipe as mp
 import calcul
 import settings
 from math import *
 import draw
-from google.protobuf.json_format import MessageToDict
 
 def victory(image, results):
+
     pos = calcul.pos_hand_landmarks(image,results)
     draw.draw_HAND(image, pos)
 
@@ -45,6 +44,7 @@ def fing_spread(image, results):
                 draw.color_pos(image, pos[i], settings.RED)
 
 def wrap_fing(image, results):
+
     cv2.putText(image, "Wrap your fingers", (50,80), 0, 1, (0,0,255), 2)
     cv2.putText(image, calcul.handedness(results), (settings.sh,80), 0, 1.5, (0,0,255), 2)
     pos = calcul.pos_hand_landmarks(image,results)
@@ -130,6 +130,36 @@ def arpege(image, results, steps):
             draw.draw_HAND(image, pos)
             steps[6] = 1
             
+def thumb_mouv(image, results, steps):
+    cv2.putText(image, "Match the red dot with your thumb", (50,80), 0, 0.7, settings.RED, 2)
+    cv2.putText(image, calcul.handedness(results), (settings.sh,80), 0, 1.5, settings.RED, 2)
+    pos = calcul.pos_hand_landmarks(image,results)
+    draw.draw_HAND(image, pos)
+
+    thumb_angle = calcul.cos_alkashi(calcul.eucli_length(pos[4], pos[5]), calcul.eucli_length(pos[4], pos[0]), calcul.eucli_length(pos[5], pos[0]))
+
+    if steps[1] == 1 :
+        draw.draw_HAND(image, pos)
+    #the red dot
+    if steps[0] == 0 : 
+        draw.color_pos(image, pos[17], settings.RED)
+
+    #closed thumb
+    if steps[0] == 0 and calcul.eucli_length(pos[4], pos[17]) < 40 : 
+        draw.draw_HAND(image, pos)
+        steps[0] = 1
+    
+    #opened thumb
+    if steps[0] == 1 and steps[1] == 0 :
+        cv2.putText(image, "Then stretch your thumb", (50,110), 0, 0.7, settings.RED, 2)
+        draw.color_HAND(image, pos, settings.RED)
+
+        if thumb_angle < cos(calcul.radian(35)) and thumb_angle > cos(calcul.radian(90)) and pos[4][0] < pos[5][0]:
+            steps[1] = 1
+
+
 
     
+
+
             

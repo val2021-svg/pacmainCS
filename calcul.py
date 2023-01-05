@@ -9,7 +9,7 @@ def eucli_length(P1,P2):
     x2, y2, z2 = P2
     return sqrt((x1-x2)**2 + (y1-y2)**2 + (z1-z2)**2)
 
-#Computes the cosinus opposed to the a segment with Alkashi's method
+#Computes the cosinus opposed to the 'a' segment with Alkashi's method
 def cos_alkashi(a,b,c):
     return (b**2 + c**2 - a**2)/(2*b*c)
 

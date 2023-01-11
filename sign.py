@@ -26,7 +26,7 @@ def victory(image, results):
 
         if calcul.cos_alkashi(a,b,c) < cos(calcul.radian(10)) and calcul.cos_alkashi(a,b,c) > cos(calcul.radian(25)) and pos[8][0] > pos[12][0]:
             hand_status = "V"
-            cv2.putText(image, hand_status, (50,80), 0, 1.5, (0,0,255), 2)
+            cv2.putText(image, hand_status, (50,80), 0, 1.5, settings.RED, 2)
             cv2.putText(image, calcul.handedness(results), (settings.sh,80), 0, 1.5, settings.RED, 2)
 
 def fing_spread(image, results):
@@ -145,7 +145,7 @@ def thumb_mouv(image, results, steps):
         draw.color_pos(image, pos[17], settings.RED)
 
     #closed thumb
-    if steps[0] == 0 and calcul.eucli_length(pos[4], pos[17]) < 40 : 
+    if steps[0] == 0 and calcul.eucli_length(pos[4], pos[17]) < 60 : 
         draw.draw_HAND(image, pos)
         steps[0] = 1
     
@@ -154,8 +154,11 @@ def thumb_mouv(image, results, steps):
         cv2.putText(image, "Then stretch your thumb", (50,110), 0, 0.7, settings.RED, 2)
         draw.color_HAND(image, pos, settings.RED)
 
-        if thumb_angle < cos(calcul.radian(35)) and thumb_angle > cos(calcul.radian(90)) and pos[4][0] < pos[5][0]:
-            steps[1] = 1
+        if thumb_angle < cos(calcul.radian(35)) and thumb_angle > cos(calcul.radian(90)) :
+            if calcul.handedness(results)=='Right' and pos[4][0] < pos[5][0]:
+                steps[1] = 1
+            elif calcul.handedness(results)=='Left' and pos[4][0] > pos[5][0]:
+                steps[1] = 1
 
 
 

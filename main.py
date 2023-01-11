@@ -12,6 +12,10 @@ root.title('PACMAIN CS')
 canva = tk.Canvas(root, width=settings.sw, height=settings.sh, bg='blue')
 canva.pack()
 
+#add the name of the game
+canva.create_text(settings.sw / 2, 50, text="PACMAIN", fill='yellow', font=("Calibri", 50))
+
+
 #creation of buttons
 startbttn = tk.Button(root, text='Start Game', command=run_program, width=15, height=2)
 

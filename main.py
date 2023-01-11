@@ -12,6 +12,11 @@ pygame.init()
 screen = pygame.display.set_mode((settings.sw, settings.sh))
 pygame.display.set_caption("PACMAIN CS")
 
+
+# add a logo
+icon = pygame.image.load("images/logo.png")
+pygame.display.set_icon(icon)
+
 # Fill the screen with blue color
 screen.fill(settings.pygame_BLUE)
 

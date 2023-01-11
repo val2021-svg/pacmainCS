@@ -28,6 +28,7 @@ def victory(image, results):
             hand_status = "V"
             cv2.putText(image, hand_status, (50,80), 0, 1.5, settings.RED, 2)
             cv2.putText(image, calcul.handedness(results), (settings.sh,80), 0, 1.5, settings.RED, 2)
+            
 
 def fing_spread(image, results):
     
@@ -129,6 +130,7 @@ def arpege(image, results, steps):
         if calcul.eucli_length(pos[4],pos[13]) <= 50 :
             draw.draw_HAND(image, pos)
             steps[6] = 1
+
             
 def thumb_mouv(image, results, steps):
     cv2.putText(image, "Match the red dot with your thumb", (50,80), 0, 0.7, settings.RED, 2)

@@ -1,38 +1,59 @@
-import tkinter as tk
+import pygame
 import subprocess
 import settings
 
 def run_program():
     subprocess.run(["python", "hand_tracking.py"])
 
-root = tk.Tk()
-root.title('PACMAIN CS')
+# Initialize pygame
+pygame.init()
 
-#creation of a canva
-canva = tk.Canvas(root, width=settings.sw, height=settings.sh, bg='blue')
-canva.pack()
+# Set the window size and caption
+screen = pygame.display.set_mode((settings.sw, settings.sh))
+pygame.display.set_caption("PACMAIN CS")
 
-#add the name of the game
-canva.create_text(settings.sw / 2, 50, text="PACMAIN", fill='yellow', font=("Calibri", 50))
+# Fill the screen with blue color
+screen.fill(settings.pygame_BLUE)
 
+# Create the "Start Game" button
+start_button = pygame.Surface((150, 40))
+start_button.fill(settings.WHITE)
+font = pygame.font.Font(None, 30)
+text = font.render("Start Game", 1, settings.BLACK)
+textpos = text.get_rect(centerx=start_button.get_width()/2, centery=start_button.get_height()/2)
+start_button.blit(text, textpos)
 
-#creation of buttons
-startbttn = tk.Button(root, text='Start Game', command=run_program, width=15, height=2)
+# Create a variable to track the button status
+button_pressed = False
 
-#center coords
-x_startbttn = settings.sw / 2
-y_startbttn = settings.sh / 2
+# Main game loop
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
 
-#place the buttons
-canva.create_window(x_startbttn, y_startbttn, window=startbttn)
+        # Check if the mouse button is pressed on the "Start Game" button
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if start_button.get_rect(center=(settings.sw/2, settings.sh/2)).collidepoint(event.pos):
+                button_pressed = True
 
+        # Check if the mouse button is released on the "Start Game" button
+        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+            if start_button.get_rect(center=(settings.sw/2, settings.sh/2)).collidepoint(event.pos):
+                run_program()
 
-menubar = tk.Menu(root)
-filemenu = tk.Menu(menubar, tearoff=0)
-filemenu.add_command(label="Run Program", command=run_program)
-filemenu.add_separator()
-filemenu.add_command(label="Exit", command=root.quit)
-menubar.add_cascade(label="File", menu=filemenu)
+    # Draw the "Start Game" button
+    screen.blit(start_button, start_button.get_rect(center=(settings.sw/2, settings.sh/2)))
 
-root.config(menu=menubar)
-root.mainloop()
+    # Create the "PACMAIN" text
+    font = pygame.font.Font(None, 50)
+    text = font.render("PACMAIN", 1, settings.pygame_YELLOW)
+    textpos = text.get_rect(centerx=settings.sw/2, centery=50)
+    screen.blit(text, textpos)
+
+    # Update the display
+    pygame.display.update()
+
+# Quit pygame
+pygame.quit()

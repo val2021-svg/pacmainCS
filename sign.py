@@ -133,7 +133,6 @@ def arpege(image, results, steps):
         if calcul.eucli_length(pos[4],pos[13]) <= 50 :
             draw.draw_HAND(image, pos)
             steps[6] = 1
-            # return 'end'
 
             
 def thumb_mouv(image, results, steps):
@@ -163,10 +162,10 @@ def thumb_mouv(image, results, steps):
         if thumb_angle < cos(calcul.radian(35)) and thumb_angle > cos(calcul.radian(90)) :
             if calcul.handedness(results)=='Right' and pos[4][0] < pos[5][0]:
                 steps[1] = 1
-                # return 'end'
+               
             elif calcul.handedness(results)=='Left' and pos[4][0] > pos[5][0]:
                 steps[1] = 1
-                # return 'end'
+                
 
 # randomizes the order of the exercises
 def random_signs(sign_list):

@@ -35,3 +35,8 @@ def draw_HAND(image, pos):
 def color_pos(image, P, COLOR):
         x, y, z = P
         cv2.circle(image, (int(x), int(y)), 5, COLOR, -1)
+
+#Coloring the hand in a specific color 
+def color_HAND(image, pos, COLOR):
+    for i in range(len(pos)):
+            color_pos(image, pos[i], COLOR)

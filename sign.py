@@ -45,6 +45,7 @@ def fing_spread(image, results, steps):
             for i in range(21):
                 draw.color_pos(image, pos[i], settings.RED)
             steps[1] = 1
+            draw.breakIm(image)
 
 def wrap_fing(image, results, steps):
 
@@ -59,6 +60,7 @@ def wrap_fing(image, results, steps):
             for i in range(21):
                 draw.color_pos(image, pos[i], settings.RED)
             steps[1] = 1
+            draw.breakIm(image)
         
         elif calcul.little_wrap(pos):
             cv2.putText(image, "GREAT!", (settings.sw//2 - 20,settings.sh//2), 0, 1, settings.GREEN, 6)
@@ -133,6 +135,7 @@ def arpege(image, results, steps):
         if calcul.eucli_length(pos[4],pos[13]) <= 50 :
             draw.draw_HAND(image, pos)
             steps[6] = 1
+            draw.breakIm(image)
 
             
 def thumb_mouv(image, results, steps):
@@ -145,6 +148,7 @@ def thumb_mouv(image, results, steps):
 
     if steps[1] == 1 :
         draw.draw_HAND(image, pos)
+
     # the red dot
     if steps[0] == 0 : 
         draw.color_pos(image, pos[17], settings.RED)
@@ -153,6 +157,7 @@ def thumb_mouv(image, results, steps):
     if steps[0] == 0 and calcul.eucli_length(pos[4], pos[17]) < 60 : 
         draw.draw_HAND(image, pos)
         steps[0] = 1
+        
     
     # opened thumb
     if steps[0] == 1 and steps[1] == 0 :
@@ -162,9 +167,11 @@ def thumb_mouv(image, results, steps):
         if thumb_angle < cos(calcul.radian(35)) and thumb_angle > cos(calcul.radian(90)) :
             if calcul.handedness(results)=='Right' and pos[4][0] < pos[5][0]:
                 steps[1] = 1
+                draw.breakIm(image)
                
             elif calcul.handedness(results)=='Left' and pos[4][0] > pos[5][0]:
                 steps[1] = 1
+                draw.breakIm(image)
                 
 
 # randomizes the order of the exercises

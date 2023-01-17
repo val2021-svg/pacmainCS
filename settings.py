@@ -1,5 +1,5 @@
 # screen settings
-sw, sh = 630, 470
+sw, sh = 640, 480
 nb_max_hands = 1
 
 # COLORS

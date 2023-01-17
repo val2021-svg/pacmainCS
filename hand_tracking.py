@@ -3,6 +3,8 @@ import cv2
 from math import *
 import sign
 import settings
+import time
+import draw
 
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
@@ -14,7 +16,7 @@ cap = cv2.VideoCapture(0)
 
 with mp_hands.Hands(max_num_hands = settings.nb_max_hands, min_detection_confidence=0.8, min_tracking_confidence=0.5) as hands:
     steps = [0]*7
-    i = 0
+    i, weight = 0, 0
     
     while cap.isOpened():
         ret, frame = cap.read()
@@ -49,15 +51,26 @@ with mp_hands.Hands(max_num_hands = settings.nb_max_hands, min_detection_confide
                         sign.find_sign_func(rd_list[i], image, results, steps)
                     else : 
                         steps = [0]*7
-                        i += 1
+                        weight += 1
+                        time.sleep(4)
+                        
+                        if weight == 4 :
+                            i += 1 
+                            weight = 0
+                            time.sleep(4)
                 else :
                     print(rd_list[i], steps)
                     if steps[1] == 0:
                         sign.find_sign_func(rd_list[i], image, results, steps)
                     else : 
                         steps = [0]*7
-                        i += 1
-                
+                        weight += 1
+                        time.sleep(4)
+                        
+                        if weight == 4 :
+                            i += 1 
+                            weight = 0
+                            time.sleep(4)
             
                 
 

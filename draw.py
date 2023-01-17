@@ -3,6 +3,7 @@ import calcul
 import settings
 import cv2
 import math
+import time
 
 # Draws the connexion between the hand's landmarks 
 def draw_connex(image, pos):
@@ -40,3 +41,11 @@ def color_pos(image, P, COLOR):
 def color_HAND(image, pos, COLOR):
     for i in range(len(pos)):
             color_pos(image, pos[i], COLOR)
+
+# Draw the good job image
+def breakIm(image):
+    cv2.rectangle(image, (0, 0), (settings.sw, settings.sh), settings.GREEN, -1)
+    cv2.putText(image, "GREAT", (settings.sw // 2 - 20, settings.sh // 2), 0, 1, settings.WHITE, 4)
+
+
+    

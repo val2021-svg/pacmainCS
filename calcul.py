@@ -59,10 +59,10 @@ def spread(pos):
     mid_to_ring = eucli_length(pos[12],pos[16])
     ring_to_little = eucli_length(pos[16],pos[20])
 
-    if cos_alkashi(thumb_to_ind,thumb,ind_fing) < cos(radian(5)) and cos_alkashi(thumb_to_ind,thumb,ind_fing) > cos(radian(45)) :
-            if cos_alkashi(ind_to_mid,mid_fing,ind_fing) < cos(radian(5)) and cos_alkashi(ind_to_mid,mid_fing,ind_fing) > cos(radian(45)) :
-                    if cos_alkashi(mid_to_ring,mid_fing,ring_fing) < cos(radian(5)) and cos_alkashi(mid_to_ring,mid_fing,ring_fing) > cos(radian(45)) :
-                            if cos_alkashi(ring_to_little,ring_fing,little_fing) < cos(radian(5)) and cos_alkashi(ring_to_little,ring_fing,little_fing) > cos(radian(45)) :
+    if cos_alkashi(thumb_to_ind,thumb,ind_fing) < cos(radian(10)) and cos_alkashi(thumb_to_ind,thumb,ind_fing) > cos(radian(45)) :
+            if cos_alkashi(ind_to_mid,mid_fing,ind_fing) < cos(radian(10)) and cos_alkashi(ind_to_mid,mid_fing,ind_fing) > cos(radian(45)) :
+                    if cos_alkashi(mid_to_ring,mid_fing,ring_fing) < cos(radian(10)) and cos_alkashi(mid_to_ring,mid_fing,ring_fing) > cos(radian(45)) :
+                            if cos_alkashi(ring_to_little,ring_fing,little_fing) < cos(radian(10)) and cos_alkashi(ring_to_little,ring_fing,little_fing) > cos(radian(45)) :
                                 if abs(pos[4][2]-pos[0][2])<=85 and abs(pos[8][2]-pos[0][2])<=95 and abs(pos[12][2]-pos[0][2])<=105 and abs(pos[16][2]-pos[0][2])<=125 and abs(pos[20][2]-pos[0][2])<=140 : #straight hand
                                     return True
     

@@ -39,41 +39,68 @@ class Menu():
 
             pygame.display.update()
 
-
-class Square():
-    def __init__(self, screen, size=(100, 100), pos=(50, 50), border_size=10, color=settings.BLUE, bordercolor=settings.RED):
-        self.size = size
+#an image that can be selected
+class ClickableIcon(pygame.sprite.Sprite):
+    def __init__(self,screen,pos,path,rawtext,size=(70,70)):
+        self.rawtext=rawtext
         self.pos = pos
-        self.incolor = color
-        self.bordercolor = bordercolor
+        print(path)
+        self.size=size
+        image = pygame.image.load(path).convert_alpha()
+        image = pygame.transform.scale(image, size)
+        self.rect=image.get_rect()
+        #set position of self.rect
+        self.rect.x=self.pos[0]
+        self.rect.y=self.pos[1]
+        self.image=image
         self.selected = False
         self.screen = screen
-        self.inrect = pygame.Rect(
-            pos, size).inflate(-border_size, -border_size)
-        self.outrect = pygame.Rect(pos, size)
-        pygame.draw.rect(screen, color, self.outrect)
+        self.screen.blit(self.image,self.pos)
+        #add the text text under the image
+        self.font=pygame.font.SysFont(None,20)
+        self.text=self.font.render(rawtext,True,settings.BLACK)
+        text_rect=self.text.get_rect()
+        self.text_pos=(self.pos[0]+(self.size[0]-text_rect[2])/2,self.pos[1]+self.size[1]+10)
+        self.screen.blit(self.text,self.text_pos)
+        self.screen.blit(self.image,self.pos)
 
-    def select(self):
-        self.outline(not self.selected)
-        self.selected = not self.selected
-
-    def outline(self, bool):
-        if bool:
-            self.color(self.screen, self.bordercolor)
+    #when the image is selected, change the text color to red and draw it and change the boolean selected to True
+    def update(self):
+        if not self.selected:
+            print("up")
+            font=pygame.font.SysFont(None,20)
+            text=font.render(self.rawtext,True,settings.RED)
+            self.screen.blit(text,self.text_pos)
+            self.selected=True
+            print("done")
         else:
-            self.color(self.screen, self.incolor)
-
-    def color(self, screen, bordercolor):
-        pygame.draw.rect(screen, bordercolor, self.outrect)
-        pygame.draw.rect(screen, self.incolor, self.inrect)
+            self.text=self.font.render(self.rawtext,True,settings.BLACK)
+            self.screen.blit(self.text,self.text_pos)
+            self.selected=False
 
     def who(self):
         print("Size : "+str(self.size) + "\nPosition : " + str(self.pos))
 
+#a class that represents a text that can be clicked on, inherits from pygame.sprite.Sprite
+class ClickableText(pygame.sprite.Sprite):
+    def __init__(self,text,pos,screen,size=40):
+        super().__init__()
+        self.pos=pos
+        font=pygame.font.SysFont(None,size)
+        self.text=font.render(text,True,settings.BLACK)
+
+    #draws the text on the screen
+    def draw(self,screen):
+        screen.blit(self.text,self.pos)
+
+    #update the text and print "text clicked on" when the mouse is on the text
+    def update(self):
+        print("text clicked on")
 
 def checkpos(square, x, y):
     #print("Checking if {},{} is between {},{} and {},{}".format(x,y,square.pos[0],square.pos[0]+square.size[0],square.pos[1],square.pos[1]+square.size[1]))
     return x >= square.pos[0] and x <= square.pos[0]+square.size[0] and y >= square.pos[1] and y <= square.pos[1]+square.size[1]
+
 
 
 def test():
@@ -82,7 +109,7 @@ def test():
     screen = pygame.display.set_mode((settings.sw, settings.sh))
     screen.fill(settings.BLACK)
 
-    square = Square(screen)
+    square = ClickableImage(screen)
     square.who()
     while run:
 
@@ -114,20 +141,18 @@ def sign_selection_menu():
     run = True
     # create pygame screen and set it to black
     screen = pygame.display.set_mode((settings.sw, settings.sh))
-    screen.fill(settings.BLACK)
+    screen.fill(settings.CYAN)
 
     # display main message "Selection des signes"
-    font = pygame.font.SysFont(None, 30)
-    maintext = font.render("Selection des signes", True, settings.WHITE)
+    font = pygame.font.SysFont(None, 50)
+    maintext = font.render("Selection des signes", True, settings.BLACK)
     center(maintext, screen, 50)
 
     # create multiple squares that will each represent one sign
     sign_list = {}
     pos = []
-    for i in range(10):
-        sign_list["square"+str(i)] = Square(screen,
-                                            size=(50, 50), border_size=5, pos=(40+100*i, 100))
-    print(sign_list)
+    icon1=ClickableIcon(screen,pos=(50,50),rawtext="Signe1",path="images/logo.png")
+    sign_list[1] = icon1
     while run:
 
         for event in pygame.event.get():
@@ -136,11 +161,22 @@ def sign_selection_menu():
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 for square in sign_list.values():
-                    if checkpos(square, x, y):
-                        square.select()
+                    if square.rect.collidepoint(x, y):
+                        square.update()
         pygame.display.flip()
 
+def instant_test_():
+    screen=pygame.display.set_mode((settings.sw,settings.sh))
+    screen.fill(settings.CYAN)
+    path="images/logo.png"
+    image=pygame.image.load(path).convert_alpha()
+    size=(100,100)
+    image = pygame.transform.scale(image, size)
+    screen.blit(image,(100,100))
+    pygame.display.flip()
+    input()
 
 if __name__ == "__main__":
-    # test()
+    #test()
     sign_selection_menu()
+    #instant_test_()

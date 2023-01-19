@@ -1,6 +1,7 @@
 import pygame
 import subprocess
 import settings
+from pygame.gfxdraw import bezier, aacircle
 
 def run_program():
     subprocess.run(["python", "hand_tracking.py"])
@@ -21,12 +22,18 @@ pygame.display.set_icon(icon)
 screen.fill(settings.pygame_BLUE)
 
 # Create the "Start Game" button
-start_button = pygame.Surface((150, 40))
-start_button.fill(settings.WHITE)
+start_button_normal = pygame.Surface((150, 40))
+start_button_normal.fill(settings.WHITE)
+
+# "Start Game" button when clicked
+start_button_hover = pygame.Surface((150, 40))
+start_button_hover.fill(settings.GREY)
+
 font = pygame.font.Font(None, 30)
 text = font.render("Start Game", 1, settings.BLACK)
-textpos = text.get_rect(centerx=start_button.get_width()/2, centery=start_button.get_height()/2)
-start_button.blit(text, textpos)
+textpos = text.get_rect(centerx=start_button_normal.get_width()/2, centery=start_button_normal.get_height()/2)
+start_button_hover.blit(text, textpos)
+start_button_normal.blit(text, textpos)
 
 # Create a variable to track the button status
 button_pressed = False
@@ -40,16 +47,20 @@ while running:
 
         # Check if the mouse button is pressed on the "Start Game" button
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            if start_button.get_rect(center=(settings.sw/2, settings.sh/2)).collidepoint(event.pos):
+            if start_button_normal.get_rect(center=(settings.sw/2, settings.sh/2)).collidepoint(event.pos):
                 button_pressed = True
 
         # Check if the mouse button is released on the "Start Game" button
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-            if start_button.get_rect(center=(settings.sw/2, settings.sh/2)).collidepoint(event.pos):
+            if start_button_normal.get_rect(center=(settings.sw/2, settings.sh/2)).collidepoint(event.pos):
+                button_pressed = False
                 run_program()
 
     # Draw the "Start Game" button
-    screen.blit(start_button, start_button.get_rect(center=(settings.sw/2, settings.sh/2)))
+    if button_pressed :
+        screen.blit(start_button_hover, start_button_hover.get_rect(center=(settings.sw/2, settings.sh/2)))
+    else:
+        screen.blit(start_button_normal, start_button_normal.get_rect(center=(settings.sw/2, settings.sh/2)))
 
     # Create the "PACMAIN" text
     font = pygame.font.Font(None, 50)

@@ -8,7 +8,7 @@ GREEN = (0,255,0)
 RED = (0,0,255)
 BLACK = (0,0,0)
 WHITE = (255,255,255)
-
+GREY = (127, 127, 127)
 
 pygame_BLUE = (0,0,255)
 pygame_RED = (255,0,0)

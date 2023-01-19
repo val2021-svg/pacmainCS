@@ -1,7 +1,6 @@
 import pygame
 import subprocess
 import settings
-from pygame.gfxdraw import bezier, aacircle
 
 def run_program():
     subprocess.run(["python", "hand_tracking.py"])

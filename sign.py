@@ -84,7 +84,7 @@ def arpege(image, results, steps):
         draw.color_pos(image, pos[4], settings.RED)
         draw.color_pos(image, pos[6], settings.RED)
 
-    if calcul.eucli_length(pos[4],pos[6]) <= 35 and steps[0] == 0 :
+    if calcul.eucli_length(pos[4],pos[6]) <= 45 and steps[0] == 0 :
         draw.draw_HAND(image, pos)
         steps[0] = 1
         

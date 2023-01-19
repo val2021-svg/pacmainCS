@@ -88,14 +88,20 @@ class ClickableText(pygame.sprite.Sprite):
         self.pos=pos
         font=pygame.font.SysFont(None,size)
         self.text=font.render(text,True,settings.BLACK)
+        self.rect=self.text.get_rect()
+        self.rect.x=self.pos[0]
+        self.rect.y=self.pos[1]
+        self.screen=screen
 
     #draws the text on the screen
-    def draw(self,screen):
-        screen.blit(self.text,self.pos)
+    def draw(self):
+        self.screen.blit(self.text,self.pos)
 
     #update the text and print "text clicked on" when the mouse is on the text
     def update(self):
         print("text clicked on")
+
+#class ValiderText()
 
 def checkpos(square, x, y):
     #print("Checking if {},{} is between {},{} and {},{}".format(x,y,square.pos[0],square.pos[0]+square.size[0],square.pos[1],square.pos[1]+square.size[1]))
@@ -148,11 +154,19 @@ def sign_selection_menu():
     maintext = font.render("Selection des signes", True, settings.BLACK)
     center(maintext, screen, 50)
 
+    sprite_list = {}
+
+    #create a text at the bottom right that display "Play" and that will be clickable
+    playtext = ClickableText("Play", (settings.sw-100, settings.sh-50), screen)
+    playtext.draw()
+    sprite_list[0] = playtext
+
     # create multiple squares that will each represent one sign
-    sign_list = {}
     pos = []
-    icon1=ClickableIcon(screen,pos=(50,50),rawtext="Signe1",path="images/logo.png")
-    sign_list[1] = icon1
+    icon1=ClickableIcon(screen,pos=(50,150),rawtext="Signe1",path="images/logo.png")
+    sprite_list[1] = icon1
+    icon2=ClickableIcon(screen,pos=(250,150),rawtext="Signe2",path="images/hand.png")
+    sprite_list[2] = icon2
     while run:
 
         for event in pygame.event.get():
@@ -160,7 +174,7 @@ def sign_selection_menu():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                for square in sign_list.values():
+                for square in sprite_list.values():
                     if square.rect.collidepoint(x, y):
                         square.update()
         pygame.display.flip()

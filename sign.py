@@ -84,7 +84,7 @@ def arpege(image, results, steps):
         draw.color_pos(image, pos[4], settings.RED)
         draw.color_pos(image, pos[6], settings.RED)
 
-    if calcul.eucli_length(pos[4],pos[6]) <= 50 and steps[0] == 0 :
+    if calcul.eucli_length(pos[4],pos[6]) <= 30 and steps[0] == 0 :
         draw.draw_HAND(image, pos)
         steps[0] = 1
         
@@ -92,7 +92,7 @@ def arpege(image, results, steps):
     if steps[0] == 1 and steps[1] == 0:
         draw.color_pos(image, pos[4], settings.RED)
         draw.color_pos(image, pos[8], settings.RED)
-        if calcul.eucli_length(pos[4],pos[8]) <= 50 :
+        if calcul.eucli_length(pos[4],pos[8]) <= 30 :
             draw.draw_HAND(image, pos)
             steps[1] = 1
     
@@ -100,7 +100,7 @@ def arpege(image, results, steps):
     if steps[1] == 1 and steps[2] == 0:
         draw.color_pos(image, pos[4], settings.RED)
         draw.color_pos(image, pos[12], settings.RED)
-        if calcul.eucli_length(pos[4],pos[12]) <= 50 :
+        if calcul.eucli_length(pos[4],pos[12]) <= 30 :
             draw.draw_HAND(image, pos)
             steps[2] = 1
     
@@ -108,7 +108,7 @@ def arpege(image, results, steps):
     if steps[2] == 1 and steps[3] == 0:
         draw.color_pos(image, pos[4], settings.RED)
         draw.color_pos(image, pos[16], settings.RED)
-        if calcul.eucli_length(pos[4],pos[16]) <= 50 :
+        if calcul.eucli_length(pos[4],pos[16]) <= 30 :
             draw.draw_HAND(image, pos)
             steps[3] = 1
 
@@ -116,7 +116,7 @@ def arpege(image, results, steps):
     if steps[3] == 1 and steps[4] == 0:
         draw.color_pos(image, pos[4], settings.RED)
         draw.color_pos(image, pos[20], settings.RED)
-        if calcul.eucli_length(pos[4],pos[20]) <= 50 :
+        if calcul.eucli_length(pos[4],pos[20]) <= 30 :
             draw.draw_HAND(image, pos)
             steps[4] = 1
     
@@ -132,7 +132,7 @@ def arpege(image, results, steps):
     if steps[5] == 1 and steps[6] == 0:
         draw.color_pos(image, pos[4], settings.RED)
         draw.color_pos(image, pos[17], settings.RED)
-        if calcul.eucli_length(pos[4],pos[13]) <= 50 :
+        if calcul.eucli_length(pos[4],pos[13]) <= 30 :
             draw.draw_HAND(image, pos)
             steps[6] = 1
             draw.breakIm(image)

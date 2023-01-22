@@ -8,6 +8,7 @@ from math import *
 import sign
 import settings
 import pygame
+from process import process_frame
 
 BLACK = (0, 0, 0)
 RED = (0, 0, 255)
@@ -26,10 +27,9 @@ hands = mp_hands.Hands(max_num_hands=settings.nb_max_hands,
 
 # an image that can be selected
 class ClickableIcon(pygame.sprite.Sprite):
-    def __init__(self, screen, pos, path, rawtext, size=(80, 80),rotate=0):
+    def __init__(self, screen, pos, path, rawtext, size=(80, 80), rotate=0):
         self.rawtext = rawtext
         self.pos = pos
-        print(path)
         self.size = size
         image = pygame.image.load(path).convert_alpha()
         image = pygame.transform.scale(image, size)
@@ -79,7 +79,7 @@ class ClickableText(pygame.sprite.Sprite):
         font = pygame.font.SysFont(None, size)
         self.text = font.render(text, True, self.color)
         self.rect = self.text.get_rect()
-        if funcupdate!=False:
+        if funcupdate != False:
             self.funcupdate = funcupdate
         if centered:
             self.rect.centerx = pos[0]
@@ -92,10 +92,11 @@ class ClickableText(pygame.sprite.Sprite):
         self.screen = screen
         self.draw()
         print(self.rect)
-        
+
     def update(self):
         self.funcupdate()
     # draws the text on the screen
+
     def draw(self):
         if self.bg_color:
             pygame.draw.rect(self.screen, self.bg_color, self.rect)
@@ -119,13 +120,13 @@ def center(text, screen, y):
 
 class Menu():
     def __init__(self):
-        self.screen=pygame.display.set_mode((settings.sw, settings.sh))
+        self.screen = pygame.display.set_mode((settings.sw, settings.sh))
         self.initalize()
         self.running = True
         self.run()
 
     def initalize(self):
-        
+
         font = pygame.font.Font(None, 50)
         self.screen.fill(settings.CYAN)
         text = font.render("PACMAIN", True, settings.pygame_BLUE)
@@ -139,11 +140,11 @@ class Menu():
         # Create the "Quit" button
         quit_game = ClickableText("Quit", (settings.sw/2, 300),
                                   settings.pygame_BLUE, self.screen, 40, settings.WHITE, True, quit)
-        
+
         self.sprites = [start_game, quit_game]
-    
+
     def quit(self):
-        self.running=False
+        self.running = False
 
     def run(self):
         while self.running:
@@ -162,8 +163,7 @@ class Menu():
 
 def sign_selection_menu():
 
-    #global variable that will contain the list of selected signs
-    global sign_list
+    # variable that will contain the list of selected signs
     sign_list = []
 
     run = True
@@ -179,19 +179,21 @@ def sign_selection_menu():
     sprite_list = {}
 
     # create a text at the bottom right that display "Play" and that will be clickable
-    playtext = ClickableText("Play", (settings.sw-100, settings.sh-50),settings.pygame_BLUE, screen, funcupdate=play)
+    playtext = ClickableText("Play", (settings.sw-100, settings.sh-50),
+                             settings.pygame_BLUE, screen, funcupdate=play)
     playtext.draw()
     sprite_list[0] = playtext
 
-    #create a text a the bottom left that display quits and that calls the menu class
-    quittext = ClickableText("Menu", (50, settings.sh-50),settings.pygame_BLUE, screen, funcupdate=Menu)
+    # create a text a the bottom left that display quits and that calls the menu class
+    quittext = ClickableText("Menu", (50, settings.sh-50),
+                             settings.pygame_BLUE, screen, funcupdate=Menu)
     quittext.draw()
     sprite_list[5] = quittext
 
     # create multiple squares that will each represent one sign
     pos = []
     icon1 = ClickableIcon(screen, pos=(150, 150),
-                          rawtext="Extension du pouce", path="images/thumb.png",rotate=90)
+                          rawtext="Extension du pouce", path="images/thumb.png", rotate=90)
     sprite_list[1] = icon1
     icon2 = ClickableIcon(screen, pos=(400, 150),
                           rawtext="Ouverture de la main", path="images/hand.png")
@@ -200,7 +202,7 @@ def sign_selection_menu():
                           rawtext="Arpèges", path="images/arpege.png")
     sprite_list[3] = icon3
     icon4 = ClickableIcon(screen, pos=(400, 300),
-                          rawtext="Fermture du poing", path="images/fist.png")
+                          rawtext="Fermeture du poing", path="images/fist.png")
     sprite_list[4] = icon4
 
     while run:
@@ -209,11 +211,19 @@ def sign_selection_menu():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                #updates sprites 0 and 5 (play and menu)
-                for i in [0, 5]:
-                    if sprite_list[i].rect.collidepoint(x, y):
-                        sprite_list[i].update()
-                #updates sprites 1 to 4 (signs)
+                # updates sprites 5 (menu)
+                if sprite_list[5].rect.collidepoint(x, y):
+                    sprite_list[5].update()
+                # updates sprites 0 (play)
+                if sprite_list[0].rect.collidepoint(x, y):
+                    # display a waiting screen while the program is loading
+                    screen.fill(settings.CYAN)
+                    font = pygame.font.SysFont(None, 50)
+                    maintext = font.render("Loading...", True, settings.BLACK)
+                    center(maintext, screen, 200)
+                    pygame.display.flip()
+                    play(sign_list)
+                # updates sprites 1 to 4 (signs)
                 for i in range(1, 5):
                     if sprite_list[i].rect.collidepoint(x, y):
                         sprite_list[i].update()
@@ -226,8 +236,10 @@ def sign_selection_menu():
                                 pass
         pygame.display.flip()
 
-def play():
-    #print the list of the selected signs
+
+def play(sign_list):
+
+    # print the list of the selected signs
     print(sign_list)
 
     run = True
@@ -235,32 +247,77 @@ def play():
     screen = pygame.display.set_mode((settings.sw, settings.sh))
     screen.fill(settings.CYAN)
 
-    #back to menu button
-    back = ClickableText("Menu", (50, settings.sh-50),settings.pygame_BLUE, screen, funcupdate=Menu)
+    # back to menu button
+    back = ClickableText("Menu", (50, settings.sh-50),
+                         settings.pygame_BLUE, screen, funcupdate=Menu)
     back.draw()
     sprite_list = {}
     sprite_list[0] = back
-    #capture the camera with cv2 and display it on pygame
+    # capture the camera with cv2 and display it on pygame
     cap = cv2.VideoCapture(0)
-    while run:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+
+    # counts the number of time the movement has been detected
+    count = 10
+
+    with mp_hands.Hands(max_num_hands=settings.nb_max_hands, min_detection_confidence=0.8, min_tracking_confidence=0.5) as hands:
+        mp_drawing = mp.solutions.drawing_utils
+        mp_drawing_styles = mp.solutions.drawing_styles
+
+        state = True
+        last_state = True
+
+        while run:
+
+            # display count on screen
+            font = pygame.font.SysFont(None, 35)
+            compteur = font.render(
+                "Mouvements restants : "+str(count), True, settings.pygame_BLUE)
+
+            # event processing
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+                x, y = pygame.mouse.get_pos()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if sprite_list[0].rect.collidepoint(x, y):
+                        sprite_list[0].update()
+
+            ret, frame = cap.read()
+
+            results = hands.process(frame)
+            if results.multi_hand_landmarks:
+                frame, state, last_state, count = process_frame(
+                    frame, sign_list, results, screen, state, last_state, count)
+
+            # convert the frame to a pygame surface and display it
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            frame = np.rot90(frame)
+            frame = cv2.resize(frame, (settings.sh, settings.sw))
+            frame = pygame.surfarray.make_surface(frame)
+            screen.blit(frame, (0, 0))
+
+            # once the back frame is established, draw all buttons and text on top of it
+            back.draw()
+            screen.blit(compteur, (50, 50))
+            pygame.display.flip()
+
+            if sign_list == [] or count == 0:
+                # display the ending screen
+                screen.fill(settings.CYAN)
+                font = pygame.font.SysFont(None, 35)
+                maintext = font.render(
+                    "You have completed the session", True, settings.BLACK)
+                center(maintext, screen, 100)
+                maintext = font.render(
+                    "The game will now go back to the sign selection", True, settings.BLACK)
+                center(maintext, screen, 250)
+                pygame.display.flip()
+                pygame.time.wait(3000)
                 run = False
-            x, y = pygame.mouse.get_pos()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if sprite_list[0].rect.collidepoint(x, y):
-                    sprite_list[0].update()
-        ret, frame = cap.read()
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        frame = np.rot90(frame)
-        frame = cv2.resize(frame, (settings.sh, settings.sw))
-        frame = pygame.surfarray.make_surface(frame)
-        screen.blit(frame, (0, 0))
-        back.draw()
-        pygame.display.flip()
 
+        cap.release()
+        sign_selection_menu()
 
-    cap.release()
 
 def instant_test_():
     screen = pygame.display.set_mode((settings.sw, settings.sh))
@@ -275,7 +332,6 @@ def instant_test_():
 
 
 if __name__ == "__main__":
-    # test()
     Menu()
     sign_selection_menu()
     # instant_test_()

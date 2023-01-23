@@ -241,7 +241,7 @@ def play(sign_list):
 
     # print the list of the selected signs
     print(sign_list)
-    
+
     run = True
     # create pygame screen and set it to cyan
     screen = pygame.display.set_mode((settings.sw, settings.sh))
@@ -250,9 +250,8 @@ def play(sign_list):
     # back to menu button
     back = ClickableText("Menu", (50, settings.sh-50),
                          settings.pygame_BLUE, screen, funcupdate=Menu)
-    
-    font=pygame.font.SysFont(None, 50)
 
+    font = pygame.font.SysFont(None, 50)
 
     back.draw()
     sprite_list = {}
@@ -261,21 +260,21 @@ def play(sign_list):
     cap = cv2.VideoCapture(0)
 
     # counts the number of time the movement has been detected
-    count = 10
+    count = 3
 
     with mp_hands.Hands(max_num_hands=settings.nb_max_hands, min_detection_confidence=0.8, min_tracking_confidence=0.5) as hands:
         mp_drawing = mp.solutions.drawing_utils
         mp_drawing_styles = mp.solutions.drawing_styles
 
-        
         state = True
         last_state = True
 
-        #create the steps 
-        step_thumb=[0,0]
-        thumb_closed=False
-        step_arpege=[0,0,0,0,0,0,0]
-        last_step_arpege=[0,0,0,0,0,0,0]
+        # create the steps
+        step_thumb = [0, 0]
+        thumb_closed = False
+        step_arpege = [0, 0, 0, 0, 0, 0, 0]
+        last_step_arpege = [0, 0, 0, 0, 0, 0, 0]
+        delai=0
 
         while run:
 
@@ -294,21 +293,21 @@ def play(sign_list):
                         sprite_list[0].update()
 
             ret, frame = cap.read()
-            LRhand=None
+            LRhand = None
             results = hands.process(frame)
             if results.multi_hand_landmarks:
-                if calcul.handedness(results)=="Right":
-                    LRhand=font.render("Left",True,settings.pygame_BLUE)
+                if calcul.handedness(results) == "Right":
+                    LRhand = font.render("Left", True, settings.pygame_BLUE)
                 else:
-                    LRhand=font.render("Right",True,settings.pygame_BLUE)
-                
-                if sign_list[0]=="Ouverture de la main" or sign_list[0]=="Fermeture du poing": 
+                    LRhand = font.render("Right", True, settings.pygame_BLUE)
+
+                if sign_list[0] == "Ouverture de la main" or sign_list[0] == "Fermeture du poing":
                     frame, state, last_state, count = process_frame(
                         frame, sign_list, results, screen, state, last_state, count)
-                elif sign_list[0]=="Extension du pouce":
-                    frame, step_thumb,thumb_closed, count= process_frame(
+                elif sign_list[0] == "Extension du pouce":
+                    frame, step_thumb, thumb_closed, count = process_frame(
                         frame, sign_list, results, screen, step_thumb, thumb_closed, count)
-                elif sign_list[0]=="Arpèges":
+                elif sign_list[0] == "Arpèges":
                     frame, step_arpege, last_step_arpege, count = process_frame(
                         frame, sign_list, results, screen, step_arpege, last_step_arpege, count)
             # convert the frame to a pygame surface and display it
@@ -322,10 +321,10 @@ def play(sign_list):
             back.draw()
             screen.blit(compteur, (50, 50))
             if LRhand is not None:
-                screen.blit(LRhand,(400,50))
+                screen.blit(LRhand, (400, 50))
             pygame.display.flip()
 
-            if count==0 and len(sign_list)>1:
+            if count == 0 and len(sign_list) > 1:
                 sign_list.remove(sign_list[0])
                 screen.fill(settings.CYAN)
                 font = pygame.font.SysFont(None, 35)
@@ -336,10 +335,10 @@ def play(sign_list):
                     "Loading next exercise..."+sign_list[0], True, settings.BLACK)
                 center(maintext, screen, 250)
                 pygame.display.flip()
-                count=10
+                count = 3
                 pygame.time.wait(1500)
 
-            if len(sign_list)==1 and count==0:
+            if len(sign_list) == 1 and count == 0:
                 # display the ending screen
                 screen.fill(settings.CYAN)
                 font = pygame.font.SysFont(None, 35)

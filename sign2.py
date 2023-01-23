@@ -74,7 +74,7 @@ def arpege(image, results, steps,count):
         draw.color_pos(image, pos[4], settings.RED)
         draw.color_pos(image, pos[6], settings.RED)
     
-    if calcul.eucli_length(pos[4],pos[6]) <= 50 and steps[0]==0:
+    if calcul.eucli_length(pos[4],pos[6]) <= 25 and steps[0]==0:
         draw.draw_HAND(image, pos)
         return [1,0,0,0,0,0,0],0
         
@@ -82,7 +82,7 @@ def arpege(image, results, steps,count):
     if steps[0] == 1 and steps[1] == 0:
         draw.color_pos(image, pos[4], settings.RED)
         draw.color_pos(image, pos[8], settings.RED)
-        if calcul.eucli_length(pos[4],pos[8]) <= 50 :
+        if calcul.eucli_length(pos[4],pos[8]) <= 25 :
             draw.draw_HAND(image, pos)
             return [1,1,0,0,0,0,0],0
     
@@ -90,7 +90,7 @@ def arpege(image, results, steps,count):
     if steps[1] == 1 and steps[2] == 0:
         draw.color_pos(image, pos[4], settings.RED)
         draw.color_pos(image, pos[12], settings.RED)
-        if calcul.eucli_length(pos[4],pos[12]) <= 50 :
+        if calcul.eucli_length(pos[4],pos[12]) <= 25 :
             draw.draw_HAND(image, pos)
             return [1,1,1,0,0,0,0],0
     
@@ -98,7 +98,7 @@ def arpege(image, results, steps,count):
     if steps[2] == 1 and steps[3] == 0:
         draw.color_pos(image, pos[4], settings.RED)
         draw.color_pos(image, pos[16], settings.RED)
-        if calcul.eucli_length(pos[4],pos[16]) <= 50 :
+        if calcul.eucli_length(pos[4],pos[16]) <= 25 :
             draw.draw_HAND(image, pos)
             return [1,1,1,1,0,0,0],0
 
@@ -106,7 +106,7 @@ def arpege(image, results, steps,count):
     if steps[3] == 1 and steps[4] == 0:
         draw.color_pos(image, pos[4], settings.RED)
         draw.color_pos(image, pos[20], settings.RED)
-        if calcul.eucli_length(pos[4],pos[20]) <= 50 :
+        if calcul.eucli_length(pos[4],pos[20]) <= 25 :
             draw.draw_HAND(image, pos)
             return [1,1,1,1,1,0,0],0
     
@@ -114,7 +114,7 @@ def arpege(image, results, steps,count):
     if steps[4] == 1 and steps[5] == 0:
         draw.color_pos(image, pos[4], settings.RED)
         draw.color_pos(image, pos[19], settings.RED)
-        if calcul.eucli_length(pos[4],pos[19]) <= 50 :
+        if calcul.eucli_length(pos[4],pos[19]) <= 25 :
             draw.draw_HAND(image, pos)
             return [1,1,1,1,1,1,0],0
     
@@ -122,7 +122,7 @@ def arpege(image, results, steps,count):
     if steps[5] == 1 and steps[6] == 0:
         draw.color_pos(image, pos[4], settings.RED)
         draw.color_pos(image, pos[17], settings.RED)
-        if calcul.eucli_length(pos[4],pos[13]) <= 50 :
+        if calcul.eucli_length(pos[4],pos[13]) <= 25 :
             draw.draw_HAND(image, pos)
             return [1,1,1,1,1,1,1],0
     return steps

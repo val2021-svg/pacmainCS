@@ -3,12 +3,11 @@ sw, sh = 640, 480
 nb_max_hands = 1
 
 # COLORS
-BLUE = (255,0,0)
-GREEN = (0,255,0)
-RED = (0,0,255)
-BLACK = (0,0,0)
-WHITE = (255,255,255)
-GREY = (127, 127, 127)
+BLUE = (255, 0, 255)
+GREEN = (0, 255, 0)
+RED = (0, 0, 255)
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 CYAN = (128, 241, 245)
 
 pygame_BLUE = (0,0,255)

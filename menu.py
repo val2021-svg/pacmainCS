@@ -135,11 +135,11 @@ class Menu():
 
         # Create the "Start Game" button
         start_game = ClickableText("Start Game", (settings.sw/2, 200),
-                                   settings.pygame_BLUE, self.screen, 40, settings.WHITE, True, sign_selection_menu)
+                                   settings.pygame_BLUE, self.screen, 40, False, True, sign_selection_menu)
 
         # Create the "Quit" button
         quit_game = ClickableText("Quit", (settings.sw/2, 300),
-                                  settings.pygame_BLUE, self.screen, 40, settings.WHITE, True, quit)
+                                  settings.pygame_BLUE, self.screen, 40, False, True, quit)
 
         self.sprites = [start_game, quit_game]
 
@@ -241,7 +241,7 @@ def play(sign_list):
 
     # print the list of the selected signs
     print(sign_list)
-
+    
     run = True
     # create pygame screen and set it to cyan
     screen = pygame.display.set_mode((settings.sw, settings.sh))
@@ -250,6 +250,10 @@ def play(sign_list):
     # back to menu button
     back = ClickableText("Menu", (50, settings.sh-50),
                          settings.pygame_BLUE, screen, funcupdate=Menu)
+    
+    font=pygame.font.SysFont(None, 50)
+
+
     back.draw()
     sprite_list = {}
     sprite_list[0] = back
@@ -263,8 +267,15 @@ def play(sign_list):
         mp_drawing = mp.solutions.drawing_utils
         mp_drawing_styles = mp.solutions.drawing_styles
 
+        
         state = True
         last_state = True
+
+        #create the steps 
+        step_thumb=[0,0]
+        thumb_closed=False
+        step_arpege=[0,0,0,0,0,0,0]
+        last_step_arpege=[0,0,0,0,0,0,0]
 
         while run:
 
@@ -283,12 +294,23 @@ def play(sign_list):
                         sprite_list[0].update()
 
             ret, frame = cap.read()
-
+            LRhand=None
             results = hands.process(frame)
             if results.multi_hand_landmarks:
-                frame, state, last_state, count = process_frame(
-                    frame, sign_list, results, screen, state, last_state, count)
-
+                if calcul.handedness(results)=="Right":
+                    LRhand=font.render("Left",True,settings.pygame_BLUE)
+                else:
+                    LRhand=font.render("Right",True,settings.pygame_BLUE)
+                
+                if sign_list[0]=="Ouverture de la main" or sign_list[0]=="Fermeture du poing": 
+                    frame, state, last_state, count = process_frame(
+                        frame, sign_list, results, screen, state, last_state, count)
+                elif sign_list[0]=="Extension du pouce":
+                    frame, step_thumb,thumb_closed, count= process_frame(
+                        frame, sign_list, results, screen, step_thumb, thumb_closed, count)
+                elif sign_list[0]=="Arpèges":
+                    frame, step_arpege, last_step_arpege, count = process_frame(
+                        frame, sign_list, results, screen, step_arpege, last_step_arpege, count)
             # convert the frame to a pygame surface and display it
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             frame = np.rot90(frame)
@@ -299,9 +321,25 @@ def play(sign_list):
             # once the back frame is established, draw all buttons and text on top of it
             back.draw()
             screen.blit(compteur, (50, 50))
+            if LRhand is not None:
+                screen.blit(LRhand,(400,50))
             pygame.display.flip()
 
-            if sign_list == [] or count == 0:
+            if count==0 and len(sign_list)>1:
+                sign_list.remove(sign_list[0])
+                screen.fill(settings.CYAN)
+                font = pygame.font.SysFont(None, 35)
+                maintext = font.render(
+                    "You have completed the first exercise", True, settings.BLACK)
+                center(maintext, screen, 100)
+                maintext = font.render(
+                    "Loading next exercise..."+sign_list[0], True, settings.BLACK)
+                center(maintext, screen, 250)
+                pygame.display.flip()
+                count=10
+                pygame.time.wait(1500)
+
+            if len(sign_list)==1 and count==0:
                 # display the ending screen
                 screen.fill(settings.CYAN)
                 font = pygame.font.SysFont(None, 35)
@@ -312,7 +350,7 @@ def play(sign_list):
                     "The game will now go back to the sign selection", True, settings.BLACK)
                 center(maintext, screen, 250)
                 pygame.display.flip()
-                pygame.time.wait(3000)
+                pygame.time.wait(1500)
                 run = False
 
         cap.release()

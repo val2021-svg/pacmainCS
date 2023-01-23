@@ -39,8 +39,10 @@ def fing_spread(image, results):
     if not calcul.little_wrap(pos):
         if calcul.spread(pos):
             for i in range(21):
-                draw.color_pos(image, pos[i], settings.pygame_BLUE)
+                draw.color_pos(image, pos[i], settings.GREEN)
             return True
+    for i in range(21):
+                draw.color_pos(image, pos[i], settings.RED)
     return False
 
 def wrap_fing(image, results):
@@ -51,31 +53,30 @@ def wrap_fing(image, results):
     if pos[0][1]>pos[1][1]:
         if calcul.really_wrap(pos) or calcul.little_wrap(pos):
             for i in range(21):
-                draw.color_pos(image, pos[i], settings.RED)
+                draw.color_pos(image, pos[i], settings.GREEN)
             return True
+    for i in range(21):
+                draw.color_pos(image, pos[i], settings.RED)
     return False
         
 
 
-def arpege(image, results, steps):
-
-    cv2.putText(image, "Match the red dots", (50,80), 0, 1, (0,0,255), 2)
-    cv2.putText(image, calcul.handedness(results), (settings.sh,80), 0, 1.5, settings.RED, 2)
+def arpege(image, results, steps,count):
     pos = calcul.pos_hand_landmarks(image,results)
     draw.draw_HAND(image, pos)
-    
     # Condition of the cycle's end
     if steps[6] == 1 : 
         draw.draw_HAND(image, pos)
-
+        print("here")
+        return [0,0,0,0,0,0,0],1
     # step1
     if steps[0] == 0 :
         draw.color_pos(image, pos[4], settings.RED)
         draw.color_pos(image, pos[6], settings.RED)
-
-    if calcul.eucli_length(pos[4],pos[6]) <= 50 and steps[0] == 0 :
+    
+    if calcul.eucli_length(pos[4],pos[6]) <= 50 and steps[0]==0:
         draw.draw_HAND(image, pos)
-        steps[0] = 1
+        return [1,0,0,0,0,0,0],0
         
     # step2
     if steps[0] == 1 and steps[1] == 0:
@@ -83,7 +84,7 @@ def arpege(image, results, steps):
         draw.color_pos(image, pos[8], settings.RED)
         if calcul.eucli_length(pos[4],pos[8]) <= 50 :
             draw.draw_HAND(image, pos)
-            steps[1] = 1
+            return [1,1,0,0,0,0,0],0
     
     # step3
     if steps[1] == 1 and steps[2] == 0:
@@ -91,7 +92,7 @@ def arpege(image, results, steps):
         draw.color_pos(image, pos[12], settings.RED)
         if calcul.eucli_length(pos[4],pos[12]) <= 50 :
             draw.draw_HAND(image, pos)
-            steps[2] = 1
+            return [1,1,1,0,0,0,0],0
     
     # step4
     if steps[2] == 1 and steps[3] == 0:
@@ -99,7 +100,7 @@ def arpege(image, results, steps):
         draw.color_pos(image, pos[16], settings.RED)
         if calcul.eucli_length(pos[4],pos[16]) <= 50 :
             draw.draw_HAND(image, pos)
-            steps[3] = 1
+            return [1,1,1,1,0,0,0],0
 
     # step4
     if steps[3] == 1 and steps[4] == 0:
@@ -107,7 +108,7 @@ def arpege(image, results, steps):
         draw.color_pos(image, pos[20], settings.RED)
         if calcul.eucli_length(pos[4],pos[20]) <= 50 :
             draw.draw_HAND(image, pos)
-            steps[4] = 1
+            return [1,1,1,1,1,0,0],0
     
     # step5
     if steps[4] == 1 and steps[5] == 0:
@@ -115,7 +116,7 @@ def arpege(image, results, steps):
         draw.color_pos(image, pos[19], settings.RED)
         if calcul.eucli_length(pos[4],pos[19]) <= 50 :
             draw.draw_HAND(image, pos)
-            steps[5] = 1
+            return [1,1,1,1,1,1,0],0
     
     # step6
     if steps[5] == 1 and steps[6] == 0:
@@ -123,17 +124,14 @@ def arpege(image, results, steps):
         draw.color_pos(image, pos[17], settings.RED)
         if calcul.eucli_length(pos[4],pos[13]) <= 50 :
             draw.draw_HAND(image, pos)
-            steps[6] = 1
+            return [1,1,1,1,1,1,1],0
+    return steps
 
-            
-def thumb_mouv(image, results, steps):
-    cv2.putText(image, "Match the red dot with your thumb", (50,80), 0, 0.7, settings.RED, 2)
-    cv2.putText(image, calcul.handedness(results), (settings.sh,80), 0, 1.5, settings.RED, 2)
+def thumb_mouv(image, results, steps,last_state):
     pos = calcul.pos_hand_landmarks(image,results)
     draw.draw_HAND(image, pos)
 
     thumb_angle = calcul.cos_alkashi(calcul.eucli_length(pos[4], pos[5]), calcul.eucli_length(pos[4], pos[0]), calcul.eucli_length(pos[5], pos[0]))
-
     if steps[1] == 1 :
         draw.draw_HAND(image, pos)
     # the red dot
@@ -144,18 +142,24 @@ def thumb_mouv(image, results, steps):
     if steps[0] == 0 and calcul.eucli_length(pos[4], pos[17]) < 60 : 
         draw.draw_HAND(image, pos)
         steps[0] = 1
+        last_state=True
+        return steps,last_state
     
     # opened thumb
     if steps[0] == 1 and steps[1] == 0 :
-        cv2.putText(image, "Then stretch your thumb", (50,110), 0, 0.7, settings.RED, 2)
+        #syou should strecht your thumb
         draw.color_HAND(image, pos, settings.RED)
 
         if thumb_angle < cos(calcul.radian(35)) and thumb_angle > cos(calcul.radian(90)) :
             if calcul.handedness(results)=='Right' and pos[4][0] < pos[5][0]:
                 steps[1] = 1
+                return steps, last_state
                
             elif calcul.handedness(results)=='Left' and pos[4][0] > pos[5][0]:
                 steps[1] = 1
+                return steps,last_state
+    
+    return steps, last_state
                 
 
 # randomizes the order of the exercises

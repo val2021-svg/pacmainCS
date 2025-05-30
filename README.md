@@ -1,6 +1,45 @@
-# pacmainCS
-Ce projet a pour principal objectif de créer une application pour la réeducation 
-de la main. Par le jeu, le patient ressentira moins la douleur, et aura davantage 
-envi de travailler les différents exercices chez lui.
-Pour lancer le projet : il suffit de se placer dans le fichier 'hand_tracking.py' puis de run pour lancer un essai par défaut. Pour quitter la webcam il suffit d'appuyer sur la touche 'x' de votre clavier. Vous pouvez aussi utiliser l'interface pygame via le code 'menu.py' en cliquant sur run, puis cliquer sur <start game> et enfin de selectionner les signes souhaités puis de cliquer sur <Play>. Pour quitter, cliquer sur le bouton <menu> puis sur <quit>.
-Ce projet est en cours de développement : il nous reste le score à implémenter : Calibrage avec la main valide, Implémentation du score​, Création de l'interface résultat​, Transfère des données utilisateurs au médecin traitant, Anonymisation des données du patient​, Portabilité sur téléphone 
+# Hand Rehabilitation Application - PacMainCS
+
+This project aims to develop a **hand rehabilitation application**. By incorporating gameplay, the patient will experience less pain and be more motivated to perform rehabilitation exercises at home.
+
+---
+
+## How to Launch the Project
+
+### Option 1: Default Test (with Webcam)
+
+1. Open the file `hand_tracking.py`.
+2. Run the script to start a default test.
+3. To **exit the webcam**, press the **`x`** key on your keyboard.
+
+### Option 2: Graphical Interface (Pygame)
+
+1. Open the file `menu.py`.
+2. Click **Run**.
+3. Select the desired hand signs through the interface.
+4. Start the exercise from the menu.
+
+To **exit**, click the **Quit** button and confirm.
+
+---
+
+## Features in Development
+
+This project is **still in progress**. The following features are planned:
+
+- Calibration using the healthy hand  
+- Score tracking and evaluation  
+- Result screen interface  
+- Transferring user data to the attending physician  
+- Patient data anonymization  
+- Mobile portability (Android/iOS)
+
+---
+
+## Notes
+
+This project is designed for medical purposes, aiming to combine technology, usability, and efficiency to improve functional hand rehabilitation through engaging and user-friendly exercises.
+
+---
+
+*Thank you for your interest in this project!*
